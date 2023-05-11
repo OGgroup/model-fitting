@@ -5,7 +5,7 @@
 #from Math import np
 import numpy as np
 from Objects import BuildObject
-import SafeMathC as sm
+import SafeMath as sm
 
 class Objective():
     def __init__(self, **kwargs):
