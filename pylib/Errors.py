@@ -16,32 +16,22 @@ def Covariance(f, x):
     rv = np.array([[mc[(m,n)] for n in names] for m in names])
     return rv
 
-def ErrorsFromCovarianceMatrix(cov, params):
-    # take the max projection on _any_ eigenvector...
-    eigvals, eigvecs = np.linalg.eig(cov)
-    for i in range(eigvecs.shape[0]):
-        eigvalmax = eigvals[i]
-        eigvecmax = eigvecs[:,i]
+def ErrorsFromCovarianceMatrix(cov):
+    rv = np.sqrt(np.diag(cov))
+    return rv
 
-        rv = np.repeat(-1.0, len(params))
-        # construct unit vectors
-        for i,ip in enumerate(params):
-            phat = np.zeros(cov.shape[0])
-            phat[ip] = 1
-
-            # project eigenvector onto unit vector
-            rotation = np.dot(phat, eigvecmax)
-            error = rotation*eigvalmax
-            error = np.sqrt(np.abs(error))
-
-            rv[i] = max(rv[i], error)
+def CorrelationMatrixFromCovarianceMatrix(cov):
+    sigma = ErrorsFromCovarianceMatrix(cov)
+    outer = np.outer(sigma, sigma)
+    rv = cov / outer
     return rv
 
 def AsymptoticErrors(f, x, params=[0]):
     try:
         cov = Covariance(f, x)
-        return ErrorsFromCovarianceMatrix(cov, params)
-
+        rv = ErrorsFromCovarianceMatrix(cov)
+        rv = rv[params]
+        return rv
     except Exception as e:
         print('Exception: %s' % e)
 
