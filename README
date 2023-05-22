@@ -1,4 +1,4 @@
-Dependencies: numpy (1.18.5+), scipy (1.4.1+), nlopt (2.6.1+)
+Dependencies: numpy (1.18.5+), scipy (1.4.1+), nlopt (2.6.1+), iminuit (1.5.4+)
 Installation:
     1) Provide local copy of numpy swig interface file (numpy.i)
     2) Build "safe math" module: $ cd .../safe-math && make all
